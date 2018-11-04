@@ -18,13 +18,6 @@ Write-Host "Installing SC"
 nuget sources add -name SC902XP0 -source https://ci.appveyor.com/nuget/sitecore-devops-appveyor-v902x-p10jlc54etnr
 nuget install $ScPackageId -ExcludeVersion -OutputDirectory $PSScriptRoot
 
-Try {
-    Push-Location $ScTools
-    & .\install-xp0.ps1 -SiteName $SiteName
-} Finally {
-    Pop-Location
-}
-
 $srcDir = Resolve-Path ..\src
 $serializationDir = Resolve-Path ..\serialization
 New-Item -Type Directory $DownloadDir -ErrorAction Ignore
@@ -35,6 +28,13 @@ nuget restore ..\src\SitecoreComms.RTBF.sln
 $msbuild = IdentifyMsBuild $msbuild
 & $msbuild -verbosity:m $srcDir\SitecoreComms.RTBF.sln /p:Configuration=$Configuration
 
+
+Try {
+    Push-Location $ScTools
+    & .\install-xp0.ps1 -SiteName $SiteName
+} Finally {
+    Pop-Location
+}
 Try {
     Push-Location "$srcDir\Angular"
     npm run dev
