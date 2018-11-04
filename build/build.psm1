@@ -6,16 +6,13 @@ Function EnableModernSecurityProtocols() {
 Function IdentifyMsBuild(
     [Parameter(Mandatory=$true)] [string] $msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin\MSBuild.exe"
 ) {
-    Write-Host "Identify msbuild" -ForegroundColor Green
-    Write-Host "Supplied location: $msbuild ... " -ForegroundColor Yellow -NoNewline
     if (Test-Path -Path $msbuild) {
-        Write-Host "Found!"
+        return $msbuild
     } else {
-        Write-Debug "Not found!"
         $msbuild = $(cmd /c where msbuild)
 
         if ($msbuild -and (Test-Path -Path $msbuild)) {
-            Write-Host "Updated path to $msbuild" -ForegroundColor Yellow
+            return $msbuild
         } else {
             throw "Cannot find msbuild"
         }

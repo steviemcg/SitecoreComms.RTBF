@@ -7,6 +7,7 @@ Param(
 )
 
 cd $PSScriptRoot
+$ErrorActionPreference = "Stop"
 Import-Module $PSScriptRoot\build.psm1 -DisableNameChecking -Force
 
 $srcDir = Resolve-Path ..\src
@@ -14,7 +15,7 @@ $serializationDir = Resolve-Path ..\serialization
 New-Item -Type Directory $DownloadDir -ErrorAction Ignore
 $outputDir = InitOutputDir
 
-IdentifyMsBuild $msbuild
+$msbuild = IdentifyMsBuild $msbuild
 
 & $msbuild -verbosity:m $srcDir\SitecoreComms.RTBF.sln /p:Configuration=$Configuration
 
