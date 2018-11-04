@@ -11,7 +11,7 @@ Function IdentifyMsBuild(
     if (Test-Path -Path $msbuild) {
         Write-Host "Found!"
     } else {
-        Write-Debug "Not found!" -ForegroundColor Red
+        Write-Debug "Not found!"
         $msbuild = $(cmd /c where msbuild)
 
         if ($msbuild -and (Test-Path -Path $msbuild)) {

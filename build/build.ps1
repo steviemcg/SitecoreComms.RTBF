@@ -6,6 +6,7 @@ Param(
     $Configuration = "Release"
 )
 
+cd $PSScriptRoot
 Import-Module $PSScriptRoot\build.psm1 -DisableNameChecking -Force
 
 $srcDir = Resolve-Path ..\src
