@@ -11,6 +11,10 @@
 	},
 	"author": "Steve McGill",
 	"license": "ISC",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/steviemcg/SitecoreComms.RTBF"
+	},
 	"dependencies": {
 		"@angular/common": "^4.3.6",
 		"@angular/core": "^4.3.6",
