@@ -8,8 +8,6 @@ cache:
 artifacts:
 - path: output\SitecoreComms.ExecuteRightToBeForgotten.update
   name: SitecoreWeb
-cache:
-  - c:\downloads
 build_script:
 - ps: '.\build\build.ps1'  
 on_failure:
