@@ -1,0 +1,16 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+configuration: Release
+shallow_clone: true
+clone_depth: 1
+cache:
+  - c:\downloads
+artifacts:
+- path: output\SitecoreComms.ExecuteRightToBeForgotten.update
+  name: SitecoreWeb
+cache:
+  - c:\downloads
+build_script:
+- ps: '.\build\build.ps1'  
+on_failure:
+- ps: '#$blockRdp = $true; iex ((new-object net.webclient).DownloadString(''https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1''))'

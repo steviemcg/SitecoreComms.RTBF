@@ -1,0 +1,9 @@
+*.cs text diff=csharp 
+*.xaml    text
+*.csproj  text
+*.sln     text
+*.tt      text
+*.ps1     text
+*.md      text
+
+*.item -text

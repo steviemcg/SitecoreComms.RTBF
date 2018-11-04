@@ -1,0 +1,12 @@
+/build/*.log
+[Oo]bj/
+[Bb]in/
+/src/.vs/
+/src/packages/
+*.user
+*DS_Store
+/src/Angular/node_modules/
+/src/Angular/codegen/
+/src/Angular/dist/
+/build/Courier
+/output
