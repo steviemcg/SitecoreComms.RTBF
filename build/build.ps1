@@ -15,8 +15,9 @@ $serializationDir = Resolve-Path ..\serialization
 New-Item -Type Directory $DownloadDir -ErrorAction Ignore
 $outputDir = InitOutputDir
 
-$msbuild = IdentifyMsBuild $msbuild
+nuget restore ..\src\SitecoreComms.RTBF.sln
 
+$msbuild = IdentifyMsBuild $msbuild
 & $msbuild -verbosity:m $srcDir\SitecoreComms.RTBF.sln /p:Configuration=$Configuration
 
 Try {
