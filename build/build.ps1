@@ -1,4 +1,8 @@
+#Requires -RunAsAdministrator
 Param(
+    $SiteName = "sitecorecomms",
+    $ScPackageId = "Stroben.SitecoreDevOps.AppVeyor.V902XP0",
+    $ScTools = "$PSScriptRoot\$ScPackageId\tools",
     $CourierUrl = "https://github.com/adoprog/Sitecore-Courier/releases/download/1.2.4/Sitecore.Courier.Runner.zip",
     $DownloadDir = "C:\Downloads",
     $CourierZip = "$DownloadDir\Sitecore.Courier.Runner.zip",
@@ -9,6 +13,17 @@ Param(
 cd $PSScriptRoot
 $ErrorActionPreference = "Stop"
 Import-Module $PSScriptRoot\build.psm1 -DisableNameChecking -Force
+
+Write-Host "Installing SC"
+nuget sources add -name SC902XP0 -source https://ci.appveyor.com/nuget/sitecore-devops-appveyor-v902x-p10jlc54etnr
+nuget install $ScPackageId -ExcludeVersion -OutputDirectory $PSScriptRoot
+
+Try {
+    Push-Location $ScTools
+    & .\install-xp0.ps1 -SiteName $SiteName
+} Finally {
+    Pop-Location
+}
 
 $srcDir = Resolve-Path ..\src
 $serializationDir = Resolve-Path ..\serialization

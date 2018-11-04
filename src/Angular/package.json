@@ -18,7 +18,7 @@
 		"@angular/http": "^4.3.6",
 		"@angular/platform-browser": "^4.4.0-RC.0",
 		"@ngx-translate/core": "^7.2.0",
-		"@sitecore/ma-core": "file:C:/inetpub/wwwroot/sc901a/sitecore/shell/client/Applications/MarketingAutomation/packages/ma-core",
+		"@sitecore/ma-core": "file:C:/inetpub/wwwroot/sitecorecomms/sitecore/shell/client/Applications/MarketingAutomation/packages/ma-core",
 		"rxjs": "^5.4.3",
 		"zone.js": "^0.8.17"
 	},

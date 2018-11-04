@@ -3,6 +3,11 @@ image: Visual Studio 2017
 configuration: Release
 shallow_clone: true
 clone_depth: 1
+environment:
+  LicenseFileUrl:
+    secure: tvDdT2DZMOgijvJd0Pvmuic+soMCi6cNrh+ndejvp0gb6vCTKWp3tbXNmoUi5kjzSptXn1A1k0B2ahH2qkfLA5m04gaVSEy3DxM+3yWZVgo=
+  DownloadBase:
+    secure: tvDdT2DZMOgijvJd0Pvmuic+soMCi6cNrh+ndejvp0gb6vCTKWp3tbXNmoUi5kjzpdTZetFLWNKDuim/FJ0aVw==
 cache:
   - c:\downloads
 artifacts:
