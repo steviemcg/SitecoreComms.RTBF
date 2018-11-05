@@ -95,11 +95,11 @@
     <Reference Include="Sitecore.XConnect, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sitecore.XConnect.NoReferences.9.0.180604\lib\NET462\Sitecore.XConnect.dll</HintPath>
     </Reference>
-    <Reference Include="Sitecore.XConnect.Client">
-      <HintPath>..\packages\Sitecore.XConnect.Client.NoReferences.9.0.171219\lib\NET462\Sitecore.XConnect.Client.dll</HintPath>
+    <Reference Include="Sitecore.XConnect.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sitecore.XConnect.Client.NoReferences.9.0.180604\lib\NET462\Sitecore.XConnect.Client.dll</HintPath>
     </Reference>
-    <Reference Include="Sitecore.XConnect.Client.Configuration">
-      <HintPath>..\packages\Sitecore.XConnect.Client.Configuration.NoReferences.9.0.171219\lib\NET462\Sitecore.XConnect.Client.Configuration.dll</HintPath>
+    <Reference Include="Sitecore.XConnect.Client.Configuration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sitecore.XConnect.Client.Configuration.NoReferences.9.0.180604\lib\NET462\Sitecore.XConnect.Client.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Sitecore.XConnect.Collection.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Sitecore.XConnect.Collection.Model.NoReferences.9.0.180604\lib\NET462\Sitecore.XConnect.Collection.Model.dll</HintPath>
