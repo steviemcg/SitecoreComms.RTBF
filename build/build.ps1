@@ -36,10 +36,12 @@ Try {
     Pop-Location
 }
 Try {
+    $ErrorActionPreference = "Continue"
     Push-Location "$srcDir\Angular"
     npm run dev
 } Finally {
     Pop-Location
+    $ErrorActionPreference = "Stop"
 }
 
 robocopy /e /NFL /NDL /NJH /NJS /nc /ns /np $serializationDir "$outputDir\web"
