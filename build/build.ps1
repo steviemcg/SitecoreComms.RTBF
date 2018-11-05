@@ -28,6 +28,9 @@ nuget restore ..\src\SitecoreComms.RTBF.sln
 $msbuild = IdentifyMsBuild $msbuild
 & $msbuild -verbosity:m $srcDir\SitecoreComms.RTBF.sln /p:Configuration=$Configuration
 
+if (!($LastExitCode -eq "0")) {
+    throw "Build failed with exit code $LastExitCode"
+}
 
 Try {
     Push-Location $ScTools
