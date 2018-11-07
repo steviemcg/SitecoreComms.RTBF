@@ -36,8 +36,6 @@ Try {
     $ErrorActionPreference = "Continue"
     Push-Location "$srcDir\Angular"
 	InstallSitecoreNpmModules $NpmUrl $NpmZip
-	$ErrorActionPreference = "Stop"
-
     npm run dev
 } Finally {
     Pop-Location
