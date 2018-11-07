@@ -3,8 +3,12 @@ Param(
     $SiteName = "sitecorecomms",
     $ScPackageId = "Stroben.SitecoreDevOps.AppVeyor.V902XP0",
     $ScTools = "$PSScriptRoot\$ScPackageId\tools",
+	$DownloadBase = $Env:DownloadBase,
+	$DownloadDir = "C:\Downloads",
+	$NpmName = "npm-Sitecore 9.0.2 rev. 180604.zip",
+	$NpmUrl = "$DownloadBase/$NpmName",
+    $NpmZip = "$DownloadDir\$NpmName",
     $CourierUrl = "https://github.com/adoprog/Sitecore-Courier/releases/download/1.2.4/Sitecore.Courier.Runner.zip",
-    $DownloadDir = "C:\Downloads",
     $CourierZip = "$DownloadDir\Sitecore.Courier.Runner.zip",
     $msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin\MSBuild.exe",
     $Configuration = "Release"
@@ -13,10 +17,6 @@ Param(
 cd $PSScriptRoot
 $ErrorActionPreference = "Stop"
 Import-Module $PSScriptRoot\build.psm1 -DisableNameChecking -Force
-
-Write-Host "Installing SC"
-nuget sources add -name SC902XP0 -source https://ci.appveyor.com/nuget/sitecore-devops-appveyor-v902x-p10jlc54etnr
-nuget install $ScPackageId -ExcludeVersion -OutputDirectory $PSScriptRoot
 
 $srcDir = Resolve-Path ..\src
 $serializationDir = Resolve-Path ..\serialization
@@ -33,14 +33,11 @@ if (!($LastExitCode -eq "0")) {
 }
 
 Try {
-    Push-Location $ScTools
-    & .\install-xp0.ps1 -SiteName $SiteName
-} Finally {
-    Pop-Location
-}
-Try {
     $ErrorActionPreference = "Continue"
     Push-Location "$srcDir\Angular"
+	InstallSitecoreNpmModules $NpmUrl $NpmZip
+	$ErrorActionPreference = "Stop"
+
     npm run dev
 } Finally {
     Pop-Location

@@ -19,6 +19,28 @@ Function IdentifyMsBuild(
     }
 }
 
+Function InstallSitecoreNpmModules(
+    [Parameter(Mandatory=$true)] [string] $NpmUrl,
+    [Parameter(Mandatory=$true)] [string] $NpmZip
+) {
+	Write-Host "Installing Sitecore NPM" -ForegroundColor Green
+	if (Test-Path -Path node_modules\sitecore) {
+        Write-Debug "Already exists"
+		Return
+    }
+
+	New-Item -ItemType Directory node_modules -ErrorAction SilentlyContinue
+	New-Item -ItemType Directory node_modules\sitecore -ErrorAction SilentlyContinue
+
+	if (!(Test-Path -Path $NpmZip)) {
+		Start-BitsTransfer -Source $NpmUrl -Destination $NpmZip
+	}
+
+	Expand-Archive $NpmZip -DestinationPath node_modules\sitecore\
+
+	npm install
+}
+
 Function InstallSitecoreCourier(
     [Parameter(Mandatory=$true)] [string] $CourierUrl,
     [Parameter(Mandatory=$true)] [string] $CourierZip
@@ -35,7 +57,10 @@ Function InstallSitecoreCourier(
     if (Test-Path -Path $CourierZip) {
         Write-Debug "Already exists"
     } else {
-        EnableModernSecurityProtocols
+        # Start-BitsTransfer sadly not compatible with Github Releases?
+		# so resort to System.Net.WebClient
+
+		EnableModernSecurityProtocols
         $wc = New-Object System.Net.WebClient
         $wc.DownloadFile($CourierUrl, $CourierZip)
     }
