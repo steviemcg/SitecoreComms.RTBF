@@ -66,10 +66,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SitecoreComms.RTBF.Messaging.xml">
+    <Content Include="App_Data\Config\sitecore\Messaging\SitecoreComms.RTBF.Messaging.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SitecoreComms.RTBF.ActivityTypes.xml">
+    <Content Include="App_Data\Config\sitecore\MarketingAutomation\SitecoreComms.RTBF.ActivityTypes.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

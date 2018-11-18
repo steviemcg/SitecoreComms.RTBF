@@ -13,6 +13,12 @@ cache:
 artifacts:
 - path: output\SitecoreComms.ExecuteRightToBeForgotten.update
   name: SitecoreWeb
+- path: output\SitecoreComms.ExecuteRightToBeForgotten.AutomationEngine.zip
+  name: AutomationEngine
+- path: output\SitecoreComms.ExecuteRightToBeForgotten.IndexWorker.zip
+  name: IndexWorker
+- path: output\SitecoreComms.ExecuteRightToBeForgotten.XConnect.zip
+  name: XConnect
 build_script:
 - ps: '.\build\build.ps1'  
 on_failure:

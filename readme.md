@@ -12,9 +12,11 @@
 ## Deploying the XConnect solutions
 
 - Navigate in .\src\Angular and run: npm run dev
-- Copy the resulting 4 files under .\src\Angular\dist to C:\inetpub\wwwroot\rtbf\sitecore\shell\client\Applications\MarketingAutomation\plugins\SitecoreComms
+- Copy the resulting 2 files under .\src\Angular\dist to C:\inetpub\wwwroot\rtbf\sitecore\shell\client\Applications\MarketingAutomation\plugins\SitecoreComms
 - Copy the SitecoreComms.RTBF DLL and PDB files from .\src\Activities\bin\Debug to C:\inetpub\wwwroot\rtbf_xconnect\App_data\jobs\continuous\AutomationEngine
+
 - Copy .\src\Activities\SitecoreComms.RTBF.ActivityTypes.xml to C:\inetpub\wwwroot\rtbf_xconnect\App_data\jobs\continuous\AutomationEngine\App_Data\Config\sitecore\MarketingAutomation
 - Copy .\src\Activities\SitecoreComms.RTBF.Messaging.xml to C:\inetpub\wwwroot\rtbf_xconnect\App_data\jobs\continuous\AutomationEngine\App_Data\Config\sitecore\Messaging
+- 
 - Copy the 2 SitecoreComms.RTBF.Models.* files from .\src\Models\bin\Debug\netstandard2.0 to C:\inetpub\wwwroot\rtbf_xconnect\App_data\jobs\continuous\IndexWorker
 - Copy the 2 SitecoreComms.RTBF.Models.* files from .\src\Models\bin\Debug\netstandard2.0 to C:\inetpub\wwwroot\rtbf_xconnect\bin
