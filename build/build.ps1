@@ -24,7 +24,7 @@ Import-Module $PSScriptRoot\build.psm1 -DisableNameChecking -Force
 $srcDir = Resolve-Path ..\src
 $serializationDir = Resolve-Path ..\serialization
 New-Item -Type Directory $DownloadDir -ErrorAction Ignore
-$outputDir = Init-OutputDir
+$outputDir = Initialize-OutputDir
 
 nuget restore "$srcDir\SitecoreComms.RTBF.sln"
 

@@ -10,7 +10,7 @@
 		"build": "webpack -p --display-error-details"
 	},
 	"author": "Steve McGill",
-	"license": "ISC",
+	"license": "MIT",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/steviemcg/SitecoreComms.RTBF"

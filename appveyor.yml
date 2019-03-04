@@ -6,8 +6,6 @@ clone_depth: 1
 environment:
   DownloadBase:
     secure: tvDdT2DZMOgijvJd0Pvmuic+soMCi6cNrh+ndejvp0gb6vCTKWp3tbXNmoUi5kjzpdTZetFLWNKDuim/FJ0aVw==
-cache:
-  - c:\downloads
 artifacts:
 - path: output\SitecoreComms.ExecuteRightToBeForgotten.update
   name: SitecoreWeb

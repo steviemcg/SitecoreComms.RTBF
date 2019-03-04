@@ -1,4 +1,4 @@
-Function EnableModernSecurityProtocols() {
+Function Enable-ModernSecurityProtocols() {
     Write-Host "Enabling modern security protocols..." -foregroundcolor "green"
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
 }
@@ -60,7 +60,7 @@ Function Install-SitecoreCourier(
         # Start-BitsTransfer sadly not compatible with Github Releases?
 		# so resort to System.Net.WebClient
 
-		EnableModernSecurityProtocols
+		Enable-ModernSecurityProtocols
         $wc = New-Object System.Net.WebClient
         $wc.DownloadFile($CourierUrl, $CourierZip)
     }
@@ -68,7 +68,7 @@ Function Install-SitecoreCourier(
     Expand-Archive $CourierZip -DestinationPath $target
 }
 
-Function Init-OutputDir() {
+Function Initialize-OutputDir() {
     $outputDir = "$PSScriptRoot\..\output"
     Remove-Item $outputDir -Force -Recurse -ErrorAction Ignore | Out-Null
     New-Item -Type Directory $outputDir | Out-Null
