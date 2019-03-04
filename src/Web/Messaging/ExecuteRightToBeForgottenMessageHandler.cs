@@ -14,6 +14,10 @@ using SitecoreComms.RTBF.Models.Messaging.Buses;
 
 namespace SitecoreComms.RTBF.Web.Messaging
 {
+    public class Test
+    {
+    }
+
     [UsedImplicitly]
     public class ExecuteRightToBeForgottenMessageHandler : IMessageHandler<ExecuteRightToBeForgottenMessage>
     {
