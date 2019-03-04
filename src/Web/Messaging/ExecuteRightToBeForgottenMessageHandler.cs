@@ -16,6 +16,16 @@ namespace SitecoreComms.RTBF.Web.Messaging
 {
     public class Test
     {
+        public Test()
+        {
+            try
+            {
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
     }
 
     [UsedImplicitly]
