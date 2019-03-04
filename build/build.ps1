@@ -29,7 +29,10 @@ $outputDir = Initialize-OutputDir
 nuget restore "$srcDir\SitecoreComms.RTBF.sln"
 
 $msbuild = IdentifyMsBuild $msbuild
+
+SonarScanner.MSBuild.exe begin /k:"steviemcg_SitecoreComms.RTBF" /d:sonar.organization="steviemcg-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="04ec78025dcf16be0ef4aa8eb3d809ef1f28af59"
 & $msbuild -verbosity:m "$srcDir\SitecoreComms.RTBF.sln" /p:Configuration=$Configuration
+SonarScanner.MSBuild.exe end /d:sonar.login="04ec78025dcf16be0ef4aa8eb3d809ef1f28af59"
 
 if (!($LastExitCode -eq "0")) {
     throw "Build failed with exit code $LastExitCode"
