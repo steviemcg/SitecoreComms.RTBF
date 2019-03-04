@@ -31,9 +31,9 @@ nuget restore "$srcDir\SitecoreComms.RTBF.sln"
 $msbuild = IdentifyMsBuild $msbuild
 
 choco install sonarscanner-msbuild-net46
-SonarScanner.MSBuild.exe begin /k:"steviemcg_SitecoreComms.RTBF" /o:"steviemcg-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="04ec78025dcf16be0ef4aa8eb3d809ef1f28af59"
+SonarScanner.MSBuild.exe begin /k:"steviemcg_SitecoreComms.RTBF" /o:"steviemcg-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="b439320dd48f2f49a745e7edeb23ca4a3d3ef4b0"
 & $msbuild -verbosity:m "$srcDir\SitecoreComms.RTBF.sln" /p:Configuration=$Configuration
-SonarScanner.MSBuild.exe end /d:sonar.login="04ec78025dcf16be0ef4aa8eb3d809ef1f28af59"
+SonarScanner.MSBuild.exe end /d:sonar.login="b439320dd48f2f49a745e7edeb23ca4a3d3ef4b0"
 
 if (!($LastExitCode -eq "0")) {
     throw "Build failed with exit code $LastExitCode"
