@@ -1,6 +1,6 @@
 ## Prequisites
 
-- Sitecore XP v9.0 Update 2
+- Sitecore XP v9.1 Initial Release
 - Node / NPM
 
 ## Deploying the Sitecore Kernel solution

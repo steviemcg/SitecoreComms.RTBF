@@ -6,7 +6,6 @@ using Sitecore.EmailCampaign.Model.Messaging;
 using Sitecore.Framework.Conditions;
 using Sitecore.Framework.Messaging;
 using Sitecore.Framework.Messaging.DeferStrategies;
-using Sitecore.Modules.EmailCampaign.Core.Contacts;
 using Sitecore.XConnect;
 using Sitecore.XConnect.Client.Configuration;
 using Sitecore.XConnect.Collection.Model;
@@ -45,15 +44,15 @@ namespace SitecoreComms.RTBF.Web.Messaging
                 async () => await SendMessage(message)).ConfigureAwait(false);
 
             Log.Debug(result.Deferred
-                ? $"[{nameof(ExecuteRightToBeForgottenMessageHandler)}] deferred contact '{message.ContactIdentifier.ToLogFile()}'."
-                : $"[{nameof(ExecuteRightToBeForgottenMessageHandler)}] processed contact '{message.ContactIdentifier.ToLogFile()}'");
+                ? $"[{nameof(ExecuteRightToBeForgottenMessageHandler)}] deferred contact '{message.ContactIdentifier}'."
+                : $"[{nameof(ExecuteRightToBeForgottenMessageHandler)}] processed contact '{message.ContactIdentifier}'");
         }
 
         private async Task<HandlerResult> SendMessage(ExecuteRightToBeForgottenMessage message)
         {
             try
             {
-                Log.Info($"[{nameof(ExecuteRightToBeForgottenMessageHandler)}] Executing Right to be Forgotten on '{message.ContactIdentifier.ToLogFile()}'", this);
+                Log.Info($"[{nameof(ExecuteRightToBeForgottenMessageHandler)}] Executing Right to be Forgotten on '{message.ContactIdentifier}'", this);
 
                 using (var client = SitecoreXConnectClientConfiguration.GetClient())
                 {
@@ -62,7 +61,7 @@ namespace SitecoreComms.RTBF.Web.Messaging
                     var contact = await client.GetContactAsync(identifiedContactReference, new ContactExpandOptions(PhoneNumberList.DefaultFacetKey));
                     if (contact == null)
                     {
-                        Log.Error($"[{nameof(ExecuteRightToBeForgottenMessageHandler)}] Failed to execute right to be forgotten on '{message.ContactIdentifier.ToLogFile()}' - Contact not found", this);
+                        Log.Error($"[{nameof(ExecuteRightToBeForgottenMessageHandler)}] Failed to execute right to be forgotten on '{message.ContactIdentifier}' - Contact not found", this);
                         return new HandlerResult(HandlerResultType.Error);
                     }
 
@@ -74,7 +73,7 @@ namespace SitecoreComms.RTBF.Web.Messaging
                     }
                     catch (Exception ex)
                     {
-                        Log.Error($"[{nameof(ExecuteRightToBeForgottenMessageHandler)}] Failed to execute right to be forgotten on '{message.ContactIdentifier.ToLogFile()}'", ex, this);
+                        Log.Error($"[{nameof(ExecuteRightToBeForgottenMessageHandler)}] Failed to execute right to be forgotten on '{message.ContactIdentifier}'", ex, this);
                         return new HandlerResult(HandlerResultType.Error);
                     }
                 }

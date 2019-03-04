@@ -19,7 +19,7 @@ Function IdentifyMsBuild(
     }
 }
 
-Function InstallSitecoreNpmModules(
+Function Install-SitecoreNpmModules(
     [Parameter(Mandatory=$true)] [string] $NpmUrl,
     [Parameter(Mandatory=$true)] [string] $NpmZip
 ) {
@@ -41,7 +41,7 @@ Function InstallSitecoreNpmModules(
 	npm install
 }
 
-Function InstallSitecoreCourier(
+Function Install-SitecoreCourier(
     [Parameter(Mandatory=$true)] [string] $CourierUrl,
     [Parameter(Mandatory=$true)] [string] $CourierZip
 ) {
@@ -68,7 +68,7 @@ Function InstallSitecoreCourier(
     Expand-Archive $CourierZip -DestinationPath $target
 }
 
-Function InitOutputDir() {
+Function Init-OutputDir() {
     $outputDir = "$PSScriptRoot\..\output"
     Remove-Item $outputDir -Force -Recurse -ErrorAction Ignore | Out-Null
     New-Item -Type Directory $outputDir | Out-Null

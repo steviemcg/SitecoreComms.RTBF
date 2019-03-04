@@ -1,11 +1,9 @@
 #Requires -RunAsAdministrator
 Param(
     [Parameter(Mandatory=$false)] [string] $SiteName = "sitecorecomms",
-    [Parameter(Mandatory=$false)] [string] $ScPackageId = "Stroben.SitecoreDevOps.AppVeyor.V902XP0",
-    [Parameter(Mandatory=$false)] [string] $ScTools = "$PSScriptRoot\$ScPackageId\tools",
-	[Parameter(Mandatory=$false)] [string]  $DownloadBase,
+	[Parameter(Mandatory=$false)] [string] $DownloadBase = $Env:DownloadBase,
 	[Parameter(Mandatory=$false)] [string] $DownloadDir = "C:\Downloads",
-	[Parameter(Mandatory=$false)] [string] $NpmName = "npm-Sitecore 9.0.2 rev. 180604.zip",
+	[Parameter(Mandatory=$false)] [string] $NpmName = "npm-Sitecore 9.1.0 rev. 001564.zip",
 	[Parameter(Mandatory=$false)] [string] $NpmUrl = "$DownloadBase/$NpmName",
     [Parameter(Mandatory=$false)] [string] $NpmZip = "$DownloadDir\$NpmName",
     [Parameter(Mandatory=$false)] [string] $CourierUrl = "https://github.com/adoprog/Sitecore-Courier/releases/download/1.2.4/Sitecore.Courier.Runner.zip",
@@ -14,15 +12,11 @@ Param(
     [Parameter(Mandatory=$false)] [string] $Configuration = "Release"
 )
 
+$ErrorActionPreference = "Stop"
 Set-Location $PSScriptRoot
 
-$ErrorActionPreference = "Stop"
 if (!$DownloadBase) {
-    $DownloadBase = $Env:DownloadBase
-
-    if (!$DownloadBase) {
-        throw "DownloadBase parameter missing"
-    }
+    throw "DownloadBase parameter missing"
 }
 
 Import-Module $PSScriptRoot\build.psm1 -DisableNameChecking -Force
@@ -30,12 +24,12 @@ Import-Module $PSScriptRoot\build.psm1 -DisableNameChecking -Force
 $srcDir = Resolve-Path ..\src
 $serializationDir = Resolve-Path ..\serialization
 New-Item -Type Directory $DownloadDir -ErrorAction Ignore
-$outputDir = InitOutputDir
+$outputDir = Init-OutputDir
 
-nuget restore ..\src\SitecoreComms.RTBF.sln
+nuget restore "$srcDir\SitecoreComms.RTBF.sln"
 
 $msbuild = IdentifyMsBuild $msbuild
-& $msbuild -verbosity:m $srcDir\SitecoreComms.RTBF.sln /p:Configuration=$Configuration
+& $msbuild -verbosity:m "$srcDir\SitecoreComms.RTBF.sln" /p:Configuration=$Configuration
 
 if (!($LastExitCode -eq "0")) {
     throw "Build failed with exit code $LastExitCode"
@@ -44,7 +38,7 @@ if (!($LastExitCode -eq "0")) {
 Try {
     $ErrorActionPreference = "Continue"
     Push-Location "$srcDir\Angular"
-	InstallSitecoreNpmModules $NpmUrl $NpmZip
+	Install-SitecoreNpmModules $NpmUrl $NpmZip
     npm run dev
 } Finally {
     Pop-Location
@@ -68,6 +62,7 @@ Copy-Item "$srcDir\Models\bin\$Configuration\SitecoreComms.*.dll" "$outputDir\XC
 # Web
 robocopy /e /NFL /NDL /NJH /NJS /nc /ns /np $serializationDir "$outputDir\web"
 robocopy /e /NFL /NDL /NJH /NJS /nc /ns /np "$srcDir\Web\App_Config" "$outputDir\web\App_Config"
+Remove-Item "$outputDir\web\App_Config\Include\SitecoreComms\RTBF\Unicorn.Configs.config"
 
 New-Item -Type Directory "$outputDir\web\sitecore\shell\client\Applications\MarketingAutomation\plugins\SitecoreComms"
 Copy-Item "$srcDir\Angular\dist\*.js" "$outputDir\web\sitecore\shell\client\Applications\MarketingAutomation\plugins\SitecoreComms\"
@@ -76,7 +71,7 @@ New-Item -Type Directory "$outputDir\web\bin"
 Copy-Item "$srcDir\Web\bin\SitecoreComms.*.dll" "$outputDir\web\bin\"
 Copy-Item "$srcDir\Web\bin\SitecoreComms.*.pdb" "$outputDir\web\bin\"
 
-InstallSitecoreCourier $CourierUrl $CourierZip
+Install-SitecoreCourier $CourierUrl $CourierZip
 & $PSScriptRoot\Courier\Sitecore.Courier.Runner.exe -t $outputDir\Web -o $outputDir\SitecoreComms.ExecuteRightToBeForgotten.update -r -f
 
 # TODO: Repair Metadata
