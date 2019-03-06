@@ -14,15 +14,24 @@ Param(
 )
 
 $ErrorActionPreference = "Stop"
-Import-Module $PSScriptRoot\build.psm1
+Import-Module $PSScriptRoot\build.psm1 -Force
 
 Try 
 {
     Push-Location $PSScriptRoot
     $srcDir = Resolve-Path ..\src
-    Invoke-DotNetBuild -Solution "$srcDir\SitecoreComms.RTBF.sln" @PsBoundParameters
-    Invoke-AngularBuild -AngularDir "$srcDir\Angular" @PsBoundParameters
-    Invoke-BuildArtifacts -srcDir $srcDir @PsBoundParameters
+
+    [Parameter(Mandatory=$true)] [string] $DownloadBase,
+    [Parameter(Mandatory=$true)] [string] $DownloadDir,
+    [Parameter(Mandatory=$true)] [string] $CourierUrl,
+    [Parameter(Mandatory=$true)] [string] $CourierZip,
+    [Parameter(Mandatory=$true)] [string] $NpmUrl,
+    [Parameter(Mandatory=$true)] [string] $NpmZip
+
+    Invoke-DownloadAssets -DownloadBase $DownloadBase -DownloadDir $DownloadDir -CourierUrl $CourierUrl -CourierZip $CourierZip -NpmUrl $NpmUrl -NpmZip $NpmZip
+    Invoke-DotNetBuild -Solution "$srcDir\SitecoreComms.RTBF.sln" -SonarToken $SonarToken -Configuration $Configuration -msbuild $msbuild
+    Invoke-AngularBuild -AngularDir "$srcDir\Angular"
+    Invoke-BuildArtifacts -srcDir $srcDir -Configuration $Configuration
 } Finally {
     Pop-Location
 }
