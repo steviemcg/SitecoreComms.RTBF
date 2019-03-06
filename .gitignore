@@ -9,4 +9,5 @@
 /src/Angular/codegen/
 /src/Angular/dist/
 /build/Courier
+/build/.sonarqube
 /output
