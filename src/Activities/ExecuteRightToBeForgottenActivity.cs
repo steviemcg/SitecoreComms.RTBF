@@ -43,7 +43,7 @@ namespace SitecoreComms.RTBF.Activities
             catch (Exception e)
             {
                 _logger.LogError(0, e, "ExecuteRightToBeForgottenActivity failed");
-                return new SuccessStay(TimeSpan.FromMinutes(5));
+                return new Failure("ExecuteRightToBeForgottenActivity failed", TimeSpan.FromMinutes(5));
             }
         }
     }

@@ -4,7 +4,7 @@
 
 ![Execute Right To Be Forgotten in Marketing Automation](./docs/rtbf.png) 
 
-## Prequisites
+## Prerequisites
 
 - Sitecore XP v9.1 Initial Release
 

@@ -1,4 +1,4 @@
-## Prequisites
+## Prerequisites
 
 - Sitecore XP v9.1 Initial Release
 - Node / NPM

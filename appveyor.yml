@@ -18,6 +18,14 @@ artifacts:
 - path: output\SitecoreComms.ExecuteRightToBeForgotten.XConnect.zip
   name: XConnect
 build_script:
-- ps: '.\build\build.ps1'  
+- ps: '.\build\build.ps1'
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: Z51k94OS3WAUjuJhZFQZo+EngXZHJuzTv4BiiPU7t/Xf22zlTbIwE1GjLfit1kcg
+  artifact: /.*\.zip/
+  prerelease: true
+  on:
+    branch: master
 on_failure:
 - ps: '#$blockRdp = $true; iex ((new-object net.webclient).DownloadString(''https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1''))'
