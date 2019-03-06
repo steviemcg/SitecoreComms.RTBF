@@ -53,12 +53,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Models\Models.csproj">
-      <Project>{D6AD6DEB-3448-49A7-B858-FEB072B6E4B8}</Project>
-      <Name>Models</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Sitecore.Framework.Messaging.Abstractions">
       <Version>3.1.0</Version>
     </PackageReference>

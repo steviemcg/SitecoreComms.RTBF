@@ -10,7 +10,7 @@ Param(
     [Parameter(Mandatory=$false)] [string] $CourierZip = "$DownloadDir\Sitecore.Courier.Runner.zip",
     [Parameter(Mandatory=$false)] [string] $msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin\MSBuild.exe",
     [Parameter(Mandatory=$false)] [string] $Configuration = "Release",
-    [Parameter(Mandatory=$false)] [string] $SonarToken = "b439320dd48f2f49a745e7edeb23ca4a3d3ef4b0"
+    [Parameter(Mandatory=$false)] [string] $SonarToken = $Env:SonarToken
 )
 
 $ErrorActionPreference = "Stop"

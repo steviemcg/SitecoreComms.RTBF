@@ -20,12 +20,5 @@ The following assumes XP0 is installed (all XConnect services in one folder)
 
 ### Automation Engine
 
-- Copy the SitecoreComms.RTBF DLL and PDB files from .\src\Activities\bin\Debug to C:\inetpub\wwwroot\rtbf_xconnect\App_data\jobs\continuous\AutomationEngine
+- Copy the SitecoreComms.RTBF.Activities DLL and PDB files from .\src\Activities\bin\Debug to C:\inetpub\wwwroot\rtbf_xconnect\App_data\jobs\continuous\AutomationEngine
 - Copy .\src\Activities\App_Data to C:\inetpub\wwwroot\rtbf_xconnect\App_data\jobs\continuous\AutomationEngine\App_Data
-
-### Index Worker
-
-- Copy the 2 SitecoreComms.RTBF.Models.* files from .\src\Models\obj\Debug to C:\inetpub\wwwroot\rtbf_xconnect\App_data\jobs\continuous\IndexWorker
-
-### XConnect
-- Copy the 2 SitecoreComms.RTBF.Models.* files from .\src\Models\obj\Debug to C:\inetpub\wwwroot\rtbf_xconnect\bin

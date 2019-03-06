@@ -50,25 +50,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Messaging\InitializeMessageBus.cs" />
-    <Compile Include="Messaging\ExecuteRightToBeForgottenMessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Config\Include\SitecoreComms\RTBF\MarketingAutomation.config" />
     <Content Include="App_Config\Include\SitecoreComms\RTBF\Unicorn.Configs.config" />
-    <Content Include="App_Config\Include\SitecoreComms\RTBF\Messaging.config" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Models\Models.csproj">
-      <Project>{D6AD6DEB-3448-49A7-B858-FEB072B6E4B8}</Project>
-      <Name>Models</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Sitecore.Framework.Conditions">

@@ -6,6 +6,8 @@ clone_depth: 1
 environment:
   DownloadBase:
     secure: tvDdT2DZMOgijvJd0Pvmuic+soMCi6cNrh+ndejvp0gb6vCTKWp3tbXNmoUi5kjzpdTZetFLWNKDuim/FJ0aVw==
+  SonarToken:
+    secure: 66nLvM7BevRZ75zbSVhTbptwnAykpKzFqLiMEs5t6RdPRNId+bJ/HslmVfE+o/l2
 install:
   - ps: choco install sonarscanner-msbuild-net46
 artifacts:
@@ -13,10 +15,6 @@ artifacts:
   name: SitecoreWeb
 - path: output\SitecoreComms.ExecuteRightToBeForgotten.AutomationEngine.zip
   name: AutomationEngine
-- path: output\SitecoreComms.ExecuteRightToBeForgotten.IndexWorker.zip
-  name: IndexWorker
-- path: output\SitecoreComms.ExecuteRightToBeForgotten.XConnect.zip
-  name: XConnect
 build_script:
 - ps: '.\build\build.ps1'
 deploy:

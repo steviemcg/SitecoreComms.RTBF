@@ -1,27 +1,26 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
 using Sitecore.Framework.Conditions;
-using Sitecore.Framework.Messaging;
-using Sitecore.XConnect.Schema;
+using Sitecore.XConnect;
+using Sitecore.XConnect.Client;
 using Sitecore.Xdb.MarketingAutomation.Core.Activity;
 using Sitecore.Xdb.MarketingAutomation.Core.Processing.Plan;
-using SitecoreComms.RTBF.Models.Messaging;
-using SitecoreComms.RTBF.Models.Messaging.Buses;
 
 namespace SitecoreComms.RTBF.Activities
 {
     public class ExecuteRightToBeForgottenActivity : IActivity
     {
-        private readonly IMessageBus<ExecuteRightToBeForgottenBus> _bus;
+        private readonly IXdbContext _xdbContext;
         private readonly ILogger<IActivity> _logger;
 
         public IActivityServices Services { get; set; }
 
-        public ExecuteRightToBeForgottenActivity(IMessageBus<ExecuteRightToBeForgottenBus> bus, ILogger<ExecuteRightToBeForgottenActivity> logger)
+        public ExecuteRightToBeForgottenActivity(IXdbContext xdbContext, ILogger<ExecuteRightToBeForgottenActivity> logger)
         {
+            Condition.Requires(xdbContext, nameof(xdbContext)).IsNotNull();
             Condition.Requires(logger, nameof(logger)).IsNotNull();
 
-            _bus = bus;
+            _xdbContext = xdbContext;
             _logger = logger;
         }
 
@@ -31,12 +30,8 @@ namespace SitecoreComms.RTBF.Activities
 
             try
             {
-                var message = new ExecuteRightToBeForgottenMessage
-                {
-                    ContactIdentifier = context.Contact.GetAlias()
-                };
-
-                _bus.Send(message);
+                _xdbContext.ExecuteRightToBeForgotten(context.Contact);
+                _xdbContext.Submit();
 
                 return new SuccessExitPlan();
             }
