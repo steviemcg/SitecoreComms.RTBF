@@ -1,0 +1,28 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+configuration: Release
+shallow_clone: true
+clone_depth: 1
+environment:
+  DownloadBase:
+    secure: tvDdT2DZMOgijvJd0Pvmuic+soMCi6cNrh+ndejvp0gb6vCTKWp3tbXNmoUi5kjzpdTZetFLWNKDuim/FJ0aVw==
+  SonarToken:
+    secure: 66nLvM7BevRZ75zbSVhTbptwnAykpKzFqLiMEs5t6RdPRNId+bJ/HslmVfE+o/l2
+install:
+  - ps: choco install sonarscanner-msbuild-net46
+artifacts:
+- path: output\SitecoreComms.ExecuteRightToBeForgotten.update
+  name: SitecoreWeb
+- path: output\SitecoreComms.ExecuteRightToBeForgotten.AutomationEngine.zip
+  name: AutomationEngine
+build_script:
+- ps: '.\build\build.ps1'
+deploy:
+- provider: GitHub
+  auth_token:
+    secure: Z51k94OS3WAUjuJhZFQZo+EngXZHJuzTv4BiiPU7t/Xf22zlTbIwE1GjLfit1kcg
+  artifact: /.*\.(zip|update)/
+  on:
+    branch: master
+on_failure:
+- ps: '#$blockRdp = $true; iex ((new-object net.webclient).DownloadString(''https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1''))'

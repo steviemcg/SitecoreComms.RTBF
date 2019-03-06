@@ -1,0 +1,37 @@
+{
+	"name": "sitecorecomms.angular",
+	"version": "1.0.0",
+	"description": "SitecoreComms Marketing Automation Activity",
+	"main": "index.js",
+	"scripts": {
+		"predev": "npm install && rimraf ./codegen/",
+		"dev": "ngc -p ./src/tsconfig.aot.json && npm run build",
+		"prebuild": "rimraf ./dist/",
+		"build": "webpack -p --display-error-details"
+	},
+	"author": "Steve McGill",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/steviemcg/SitecoreComms.RTBF"
+	},
+	"dependencies": {
+		"@angular/common": "^5.2.0",
+		"@angular/core": "^5.2.0",
+		"@angular/http": "^5.2.0",
+		"@angular/platform-browser": "^5.2.0",
+		"@ngx-translate/core": "~9.0.1",
+		"@sitecore/ma-core": "./node_modules/sitecore/ma-core",
+		"rxjs": "^5.5.6",
+		"zone.js": "^0.8.16"
+	},
+	"devDependencies": {
+		"@angular/compiler": "^5.2.0",
+		"@angular/compiler-cli": "^5.2.0",
+		"copyfiles": "^1.2.0",
+		"rimraf": "^2.6.1",
+		"ts-loader": "^2.3.7",
+		"typescript": "~2.5.3",
+		"webpack": "^3.11.0"
+	}
+}

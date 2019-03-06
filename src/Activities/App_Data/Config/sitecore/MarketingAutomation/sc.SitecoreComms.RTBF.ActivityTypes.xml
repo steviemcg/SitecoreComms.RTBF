@@ -1,0 +1,16 @@
+﻿<Settings>
+    <Sitecore>
+        <XConnect>
+            <Services>
+                <SitecoreComms.RTBF.Activities.ExecuteRightToBeForgottenActivity>
+                    <Type>Sitecore.Xdb.MarketingAutomation.Locator.ActivityTypeRegistration, Sitecore.Xdb.MarketingAutomation</Type>
+                    <LifeTime>Singleton</LifeTime>
+                    <Options>
+                        <Id>{B4DF14DA-E09D-406D-B742-C33EA465068E}</Id>
+                        <ImplementationType>SitecoreComms.RTBF.Activities.ExecuteRightToBeForgottenActivity, SitecoreComms.RTBF.Activities</ImplementationType>
+                    </Options>
+                </SitecoreComms.RTBF.Activities.ExecuteRightToBeForgottenActivity>
+            </Services>
+        </XConnect>
+    </Sitecore>
+</Settings>

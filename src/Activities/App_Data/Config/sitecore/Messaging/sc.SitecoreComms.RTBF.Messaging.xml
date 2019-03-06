@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <Sitecore>
+    <XConnect>
+      <Services>
+        <Messaging>
+          <Options>
+            <Rebus>
+              <SitecoreComms.RTBF.Models.Messaging.Buses.ExecuteRightToBeForgottenBus>
+                <Transport>
+                  <SqlServer>
+                    <OneWay>true</OneWay>
+                    <ConnectionStringOrName>messaging</ConnectionStringOrName>
+                    <TableName>Sitecore_Transport</TableName>
+                    <InputQueueName>ExecuteRightToBeForgottenMessagesQueue</InputQueueName>
+                  </SqlServer>
+                </Transport>
+                <Routing>
+                  <TypeBasedMappings>
+                    <TypeMappings>
+                      <ExecuteRightToBeForgottenMapping>
+                        <Type>SitecoreComms.RTBF.Models.Messaging.ExecuteRightToBeForgottenMessage, SitecoreComms.RTBF.Models</Type>
+                        <DestinationQueue>ExecuteRightToBeForgottenMessagesQueue</DestinationQueue>
+                      </ExecuteRightToBeForgottenMapping>
+                    </TypeMappings>
+                  </TypeBasedMappings>
+                </Routing>
+                <Logging Type="Rebus.Logging.ConsoleLoggerFactory,Rebus">
+                  <Parameters>
+                    <colored type="System.Boolean">true</colored>
+                  </Parameters>
+                </Logging>
+              </SitecoreComms.RTBF.Models.Messaging.Buses.ExecuteRightToBeForgottenBus>
+            </Rebus>
+          </Options>
+        </Messaging>
+      </Services>
+    </XConnect>
+  </Sitecore>
+</Settings>
