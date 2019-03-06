@@ -29,14 +29,14 @@ Function Install-SitecoreNpmModules(
 		Return
     }
 
-	New-Item -ItemType Directory node_modules -ErrorAction SilentlyContinue
-	New-Item -ItemType Directory node_modules\sitecore -ErrorAction SilentlyContinue
+	New-Item -ItemType Directory Angular\node_modules -ErrorAction SilentlyContinue
+	New-Item -ItemType Directory Angular\node_modules\sitecore -ErrorAction SilentlyContinue
 
 	if (!(Test-Path -Path $NpmZip)) {
 		Start-BitsTransfer -Source $NpmUrl -Destination $NpmZip
 	}
 
-	Expand-Archive $NpmZip -DestinationPath node_modules\sitecore\
+	Expand-Archive $NpmZip -DestinationPath Angular\node_modules\sitecore\
 
 	npm install
 }
@@ -76,6 +76,19 @@ Function Initialize-OutputDir() {
     return $outputDir
 }
 
+Function Invoke-DownloadAssets(
+    [Parameter(Mandatory=$true)] [string] $DownloadBase,
+    [Parameter(Mandatory=$true)] [string] $DownloadDir,
+    [Parameter(Mandatory=$true)] [string] $CourierUrl,
+    [Parameter(Mandatory=$true)] [string] $CourierZip,
+    [Parameter(Mandatory=$true)] [string] $NpmUrl,
+    [Parameter(Mandatory=$true)] [string] $NpmZip
+) {
+    New-Item -Type Directory $DownloadDir -ErrorAction Ignore
+    Install-SitecoreNpmModules @PsBoundParameters
+    Install-SitecoreCourier @PsBoundParameters 
+}
+
 Function Invoke-DotNetBuild(
     [Parameter(Mandatory=$true)] [string] $Solution,
     [Parameter(Mandatory=$true)] [string] $SonarToken,
@@ -96,17 +109,56 @@ Function Invoke-DotNetBuild(
 }
 
 Function Invoke-AngularBuild(
-    [Parameter(Mandatory=$true)] [string] $AngularDir,
-    [Parameter(Mandatory=$true)] [string] $NpmUrl,
-    [Parameter(Mandatory=$true)] [string] $NpmZip
+    [Parameter(Mandatory=$true)] [string] $AngularDir
 ) {
     Try {
         $ErrorActionPreference = "Continue"
         Push-Location $AngularDir
-        Install-SitecoreNpmModules $NpmUrl $NpmZip
         npm run dev
     } Finally {
         Pop-Location
         $ErrorActionPreference = "Stop"
     }
+}
+
+Function Invoke-BuildArtifacts(
+    [Parameter(Mandatory=$true)] [string] $srcDir,
+    [Parameter(Mandatory=$true)] [string] $Configuration
+) {
+    $outputDir = Initialize-OutputDir
+    
+    # Automation Engine
+    New-Item -Type Directory "$outputDir\AutomationEngine"
+    Copy-Item "$srcDir\Activities\bin\$Configuration\SitecoreComms.*.dll" "$outputDir\AutomationEngine\"
+    Copy-Item "$srcDir\Activities\bin\$Configuration\SitecoreComms.*.pdb" "$outputDir\AutomationEngine\"
+    robocopy /e /NFL /NDL /NJH /NJS /nc /ns /np "$srcDir\Activities\App_Data" "$outputDir\AutomationEngine\App_Data"
+
+    # Index Worker
+    New-Item -Type Directory "$outputDir\IndexWorker"
+    Copy-Item "$srcDir\Models\bin\$Configuration\SitecoreComms.*.dll" "$outputDir\IndexWorker\"
+
+    # XConnect
+    New-Item -Type Directory "$outputDir\XConnect"
+    Copy-Item "$srcDir\Models\bin\$Configuration\SitecoreComms.*.dll" "$outputDir\XConnect\"
+
+    # Web
+    $serializationDir = Resolve-Path ..\serialization
+    robocopy /e /NFL /NDL /NJH /NJS /nc /ns /np $serializationDir "$outputDir\web"
+    robocopy /e /NFL /NDL /NJH /NJS /nc /ns /np "$srcDir\Web\App_Config" "$outputDir\web\App_Config"
+    Remove-Item "$outputDir\web\App_Config\Include\SitecoreComms\RTBF\Unicorn.Configs.config"
+
+    New-Item -Type Directory "$outputDir\web\sitecore\shell\client\Applications\MarketingAutomation\plugins\SitecoreComms"
+    Copy-Item "$srcDir\Angular\dist\*.js" "$outputDir\web\sitecore\shell\client\Applications\MarketingAutomation\plugins\SitecoreComms\"
+
+    New-Item -Type Directory "$outputDir\web\bin"
+    Copy-Item "$srcDir\Web\bin\SitecoreComms.*.dll" "$outputDir\web\bin\"
+    Copy-Item "$srcDir\Web\bin\SitecoreComms.*.pdb" "$outputDir\web\bin\"
+
+    & $PSScriptRoot\Courier\Sitecore.Courier.Runner.exe -t $outputDir\Web -o $outputDir\SitecoreComms.ExecuteRightToBeForgotten.update -r -f
+
+    # TODO: Repair Metadata
+
+    Compress-Archive -Path "$outputDir\AutomationEngine\*" -DestinationPath "$outputDir\SitecoreComms.ExecuteRightToBeForgotten.AutomationEngine.zip"
+    Compress-Archive -Path "$outputDir\IndexWorker\*" -DestinationPath "$outputDir\SitecoreComms.ExecuteRightToBeForgotten.IndexWorker.zip"
+    Compress-Archive -Path "$outputDir\XConnect\*" -DestinationPath "$outputDir\SitecoreComms.ExecuteRightToBeForgotten.XConnect.zip"
 }
