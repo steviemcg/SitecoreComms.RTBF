@@ -20,25 +20,32 @@ Function Invoke-IdentifyMsBuild(
 }
 
 Function Install-SitecoreNpmModules(
+    [Parameter(Mandatory=$true)] [string] $AngularDir,
     [Parameter(Mandatory=$true)] [string] $NpmUrl,
     [Parameter(Mandatory=$true)] [string] $NpmZip
 ) {
-	Write-Host "Installing Sitecore NPM" -ForegroundColor Green
-	if (Test-Path -Path node_modules\sitecore) {
-        Write-Debug "Already exists"
-		Return
+    Try {
+        Push-Location $AngularDir
+
+        Write-Host "Installing Sitecore NPM..." -ForegroundColor Green
+        if (Test-Path -Path node_modules\sitecore) {
+            Write-Debug "Already exists"
+            Return
+        }
+
+        New-Item -ItemType Directory Angular\node_modules -ErrorAction SilentlyContinue
+        New-Item -ItemType Directory Angular\node_modules\sitecore -ErrorAction SilentlyContinue
+
+        if (!(Test-Path -Path $NpmZip)) {
+            Start-BitsTransfer -Source $NpmUrl -Destination $NpmZip
+        }
+
+        Expand-Archive $NpmZip -DestinationPath Angular\node_modules\sitecore\
+
+        npm install
+    } Finally {
+        Pop-Location
     }
-
-	New-Item -ItemType Directory Angular\node_modules -ErrorAction SilentlyContinue
-	New-Item -ItemType Directory Angular\node_modules\sitecore -ErrorAction SilentlyContinue
-
-	if (!(Test-Path -Path $NpmZip)) {
-		Start-BitsTransfer -Source $NpmUrl -Destination $NpmZip
-	}
-
-	Expand-Archive $NpmZip -DestinationPath Angular\node_modules\sitecore\
-
-	npm install
 }
 
 Function Install-SitecoreCourier(
@@ -82,11 +89,13 @@ Function Invoke-DownloadAssets(
     [Parameter(Mandatory=$true)] [string] $CourierUrl,
     [Parameter(Mandatory=$true)] [string] $CourierZip,
     [Parameter(Mandatory=$true)] [string] $NpmUrl,
-    [Parameter(Mandatory=$true)] [string] $NpmZip
+    [Parameter(Mandatory=$true)] [string] $NpmZip,
+    [Parameter(Mandatory=$true)] [string] $AngularDir
 ) {
+    Write-Host "Downloading assets..." -foregroundcolor "green"
     New-Item -Type Directory $DownloadDir -ErrorAction Ignore
-    Install-SitecoreNpmModules @PsBoundParameters
-    Install-SitecoreCourier @PsBoundParameters 
+    Install-SitecoreNpmModules -NpmUrl $NpmUrl -NpmZip $NpmZip -AngularDir $AngularDir
+    Install-SitecoreCourier -CourierUrl $CourierUrl -CourierZip $CourierZip
 }
 
 Function Invoke-DotNetBuild(

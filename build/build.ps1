@@ -20,17 +20,11 @@ Try
 {
     Push-Location $PSScriptRoot
     $srcDir = Resolve-Path ..\src
+    $angularDir = Resolve-Path "$srcDir\Angular"
 
-    [Parameter(Mandatory=$true)] [string] $DownloadBase,
-    [Parameter(Mandatory=$true)] [string] $DownloadDir,
-    [Parameter(Mandatory=$true)] [string] $CourierUrl,
-    [Parameter(Mandatory=$true)] [string] $CourierZip,
-    [Parameter(Mandatory=$true)] [string] $NpmUrl,
-    [Parameter(Mandatory=$true)] [string] $NpmZip
-
-    Invoke-DownloadAssets -DownloadBase $DownloadBase -DownloadDir $DownloadDir -CourierUrl $CourierUrl -CourierZip $CourierZip -NpmUrl $NpmUrl -NpmZip $NpmZip
+    Invoke-DownloadAssets -DownloadBase $DownloadBase -DownloadDir $DownloadDir -CourierUrl $CourierUrl -CourierZip $CourierZip -NpmUrl $NpmUrl -NpmZip $NpmZip -AngularDir $angularDir
     Invoke-DotNetBuild -Solution "$srcDir\SitecoreComms.RTBF.sln" -SonarToken $SonarToken -Configuration $Configuration -msbuild $msbuild
-    Invoke-AngularBuild -AngularDir "$srcDir\Angular"
+    Invoke-AngularBuild -AngularDir $angularDir
     Invoke-BuildArtifacts -srcDir $srcDir -Configuration $Configuration
 } Finally {
     Pop-Location
