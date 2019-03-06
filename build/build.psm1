@@ -33,14 +33,14 @@ Function Install-SitecoreNpmModules(
             Return
         }
 
-        New-Item -ItemType Directory Angular\node_modules -ErrorAction SilentlyContinue
-        New-Item -ItemType Directory Angular\node_modules\sitecore -ErrorAction SilentlyContinue
+        New-Item -ItemType Directory node_modules -ErrorAction SilentlyContinue
+        New-Item -ItemType Directory node_modules\sitecore -ErrorAction SilentlyContinue
 
         if (!(Test-Path -Path $NpmZip)) {
             Start-BitsTransfer -Source $NpmUrl -Destination $NpmZip
         }
 
-        Expand-Archive $NpmZip -DestinationPath Angular\node_modules\sitecore\
+        Expand-Archive $NpmZip -DestinationPath node_modules\sitecore\
 
         npm install
     } Finally {
@@ -124,6 +124,10 @@ Function Invoke-AngularBuild(
         $ErrorActionPreference = "Continue"
         Push-Location $AngularDir
         npm run dev
+
+        if (!(Test-Path "$AngularDir\dist")) {
+            throw "Angular build probably failed, no dist folder available"
+        }
     } Finally {
         Pop-Location
         $ErrorActionPreference = "Stop"
