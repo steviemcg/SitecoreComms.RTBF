@@ -146,14 +146,6 @@ Function Invoke-BuildArtifacts(
     Copy-Item "$srcDir\Activities\bin\$Configuration\SitecoreComms.*.pdb" "$outputDir\AutomationEngine\"
     robocopy /e /NFL /NDL /NJH /NJS /nc /ns /np "$srcDir\Activities\App_Data" "$outputDir\AutomationEngine\App_Data"
 
-    # Index Worker
-    New-Item -Type Directory "$outputDir\IndexWorker"
-    Copy-Item "$srcDir\Models\bin\$Configuration\SitecoreComms.*.dll" "$outputDir\IndexWorker\"
-
-    # XConnect
-    New-Item -Type Directory "$outputDir\XConnect"
-    Copy-Item "$srcDir\Models\bin\$Configuration\SitecoreComms.*.dll" "$outputDir\XConnect\"
-
     # Web
     $serializationDir = Resolve-Path ..\serialization
     robocopy /e /NFL /NDL /NJH /NJS /nc /ns /np $serializationDir "$outputDir\web"
@@ -172,6 +164,4 @@ Function Invoke-BuildArtifacts(
     # TODO: Repair Metadata
 
     Compress-Archive -Path "$outputDir\AutomationEngine\*" -DestinationPath "$outputDir\SitecoreComms.ExecuteRightToBeForgotten.AutomationEngine.zip"
-    Compress-Archive -Path "$outputDir\IndexWorker\*" -DestinationPath "$outputDir\SitecoreComms.ExecuteRightToBeForgotten.IndexWorker.zip"
-    Compress-Archive -Path "$outputDir\XConnect\*" -DestinationPath "$outputDir\SitecoreComms.ExecuteRightToBeForgotten.XConnect.zip"
 }
