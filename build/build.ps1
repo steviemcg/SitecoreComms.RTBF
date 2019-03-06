@@ -9,13 +9,15 @@ Param(
     [Parameter(Mandatory=$false)] [string] $CourierUrl = "https://github.com/adoprog/Sitecore-Courier/releases/download/1.2.4/Sitecore.Courier.Runner.zip",
     [Parameter(Mandatory=$false)] [string] $CourierZip = "$DownloadDir\Sitecore.Courier.Runner.zip",
     [Parameter(Mandatory=$false)] [string] $msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin\MSBuild.exe",
-    [Parameter(Mandatory=$false)] [string] $Configuration = "Release"
+    [Parameter(Mandatory=$false)] [string] $Configuration = "Release",
+    [Parameter(Mandatory=$false)] [string] $SonarToken = "b439320dd48f2f49a745e7edeb23ca4a3d3ef4b0"
 )
 
 $ErrorActionPreference = "Stop"
 Set-Location $PSScriptRoot
 
 if (!$DownloadBase) {
+    # You must specify the folder where assets should be downloaded from
     throw "DownloadBase parameter missing"
 }
 
@@ -26,28 +28,8 @@ $serializationDir = Resolve-Path ..\serialization
 New-Item -Type Directory $DownloadDir -ErrorAction Ignore
 $outputDir = Initialize-OutputDir
 
-nuget restore "$srcDir\SitecoreComms.RTBF.sln"
-
-$msbuild = IdentifyMsBuild $msbuild
-
-choco install sonarscanner-msbuild-net46
-SonarScanner.MSBuild.exe begin /k:"steviemcg_SitecoreComms.RTBF" /o:"steviemcg-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="b439320dd48f2f49a745e7edeb23ca4a3d3ef4b0"
-& $msbuild -verbosity:m "$srcDir\SitecoreComms.RTBF.sln" /p:Configuration=$Configuration
-SonarScanner.MSBuild.exe end /d:sonar.login="b439320dd48f2f49a745e7edeb23ca4a3d3ef4b0"
-
-if (!($LastExitCode -eq "0")) {
-    throw "Build failed with exit code $LastExitCode"
-}
-
-Try {
-    $ErrorActionPreference = "Continue"
-    Push-Location "$srcDir\Angular"
-	Install-SitecoreNpmModules $NpmUrl $NpmZip
-    npm run dev
-} Finally {
-    Pop-Location
-    $ErrorActionPreference = "Stop"
-}
+Invoke-DotNetBuild -Solution "$srcDir\SitecoreComms.RTBF.sln" -SonarToken $SonarToken -Configuration $Configuration
+Invoke-AngularBuild -AngularDir "$srcDir\Angular" -NpmUrl $NpmUrl -NpmZip $NpmZip
 
 # Automation Engine
 New-Item -Type Directory "$outputDir\AutomationEngine"

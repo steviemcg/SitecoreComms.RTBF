@@ -3,7 +3,7 @@ Function Enable-ModernSecurityProtocols() {
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12'
 }
 
-Function IdentifyMsBuild(
+Function Invoke-IdentifyMsBuild(
     [Parameter(Mandatory=$true)] [string] $msbuild = "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin\MSBuild.exe"
 ) {
     if (Test-Path -Path $msbuild) {
@@ -74,4 +74,39 @@ Function Initialize-OutputDir() {
     New-Item -Type Directory $outputDir | Out-Null
     $outputDir = Resolve-Path $outputDir
     return $outputDir
+}
+
+Function Invoke-DotNetBuild(
+    [Parameter(Mandatory=$true)] [string] $Solution,
+    [Parameter(Mandatory=$true)] [string] $SonarToken,
+    [Parameter(Mandatory=$true)] [string] $Configuration,
+    [Parameter(Mandatory=$true)] [string] $msbuild
+) {
+    nuget restore $Solution
+
+    $msbuild = Invoke-IdentifyMsBuild $msbuild
+    
+    SonarScanner.MSBuild.exe begin /k:"steviemcg_SitecoreComms.RTBF" /o:"steviemcg-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=$SonarToken
+    & $msbuild -verbosity:m $Solution /p:Configuration=$Configuration
+    SonarScanner.MSBuild.exe end /d:sonar.login=$SonarToken
+    
+    if (!($LastExitCode -eq "0")) {
+        throw "Build failed with exit code $LastExitCode"
+    }    
+}
+
+Function Invoke-AngularBuild(
+    [Parameter(Mandatory=$true)] [string] $AngularDir,
+    [Parameter(Mandatory=$true)] [string] $NpmUrl,
+    [Parameter(Mandatory=$true)] [string] $NpmZip
+) {
+    Try {
+        $ErrorActionPreference = "Continue"
+        Push-Location $AngularDir
+        Install-SitecoreNpmModules $NpmUrl $NpmZip
+        npm run dev
+    } Finally {
+        Pop-Location
+        $ErrorActionPreference = "Stop"
+    }
 }
